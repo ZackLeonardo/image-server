@@ -1,0 +1,17 @@
+{
+  "name": "image-server",
+  "version": "1.0.0",
+  "description": "image server with nginx",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "zack",
+  "license": "MIT",
+  "dependencies": {
+    "async": "^2.6.0",
+    "express": "^4.16.3",
+    "multer": "^1.3.0",
+    "mysql": "^2.15.0"
+  }
+}
