@@ -23,16 +23,18 @@ images.post('/', upload.array(), function (req, res) {
    var size = req.body["images.size"]
 
    createFolder(function(folder){
-     var path = folder + '/' + name
+     var path = rootDir + folder + '/' + name
      move(tmpPath, path, function(err){
        if (err) {
          console.log('move file error' + err)
        } else {
          image.create(name, content_type, tmpPath, path, md5, size, function(err, ret) {
-           if (err) return console.log(err)
+           if (err) {
+             console.log('mysql image create error : ' + err)
+           }
            console.log(JSON.stringify(ret));
+           res.send(folder + '/' + name)
          })
-         res.send(req.body);
        }
      })
    })
@@ -46,14 +48,13 @@ function createFolder(callback){
   var month = date.getUTCMonth() + 1
   var day = date.getUTCDate()
 
-  var folder = rootDir + year + '-' + month + '-' + day
+  var folder = year + '-' + month + '-' + day
+  var folderPath = rootDir + folder
 
-  console.log('folder is ' + folder)
-
-  fs.access(folder, fs.constants.F_OK, (err) => {
+  fs.access(folderPath, fs.constants.F_OK, (err) => {
     console.log(err ? 'folder not exits!' : 'folder exits!');
     if (err) {
-      fs.mkdir(folder, function(err){
+      fs.mkdir(folderPath, function(err){
         if (err) {
           console.log('mkdir error')
           callback('dirError')
